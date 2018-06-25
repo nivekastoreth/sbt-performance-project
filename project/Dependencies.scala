@@ -75,7 +75,7 @@ object Dependencies {
 
   lazy val typesafeConfig = "com.typesafe" % "config" % vTypesafeConfig
   lazy val pureConfig = "com.github.pureconfig" %% "pureconfig" % vPureConfig
-  lazy val optParseApplicative = "net.bmjames" %% "scala-optparse-applicative" % vOptParseApplicative
+  //lazy val optParseApplicative = "net.bmjames" %% "scala-optparse-applicative" % vOptParseApplicative
 
   lazy val configBundle = Seq(
     typesafeConfig,
@@ -83,8 +83,8 @@ object Dependencies {
       .exclude("com.typesafe", "config")
       .exclude("com.chuusai", "shapeless_2.11"),
     shapeless,
-    optParseApplicative
-      .exclude("org.scalaz", "scalaz-core_2.11"),
+    //optParseApplicative
+    //  .exclude("org.scalaz", "scalaz-core_2.11"),
     scalazCore
   )
 
