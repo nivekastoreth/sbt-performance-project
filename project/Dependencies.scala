@@ -120,19 +120,18 @@ object Dependencies {
     specsOnlyBundle ++
       checkOnlyBundle
 
-  lazy   val logbackClassic = "ch.qos.logback" % "logback-classic" % vLogback
+  lazy val logbackClassic = "ch.qos.logback" % "logback-classic" % vLogback
+
   val scalaLogging = ("com.typesafe.scala-logging" %% "scala-logging" % vScalaLogging)
     .exclude("org.slf4j", "slf4j-api")
 
   val slf4jApi = "org.slf4j" % "slf4j-api" % vSlf4j
-  val slf4jJcl = "org.slf4j" % "jcl-over-slf4j" % vSlf4j
   val slf4jJul = "org.slf4j" % "jul-to-slf4j" % vSlf4j
 
   val loggingBundle = List(
     logbackClassic,
     scalaLogging,
-    slf4jApi,
-    slf4jJcl
+    slf4jApi
   )
 
   def scalaGroupModule(group: String, version: String)(artifact: String): ModuleID =

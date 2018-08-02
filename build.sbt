@@ -18,15 +18,16 @@ lazy val javaOpts = Seq(
 lazy val sparkDepScope = if (isSparkRunningFromSbt) Compile else Provided
 
 lazy val sparkSettings = Seq(
-  connectInput in run := true,
   javaOptions ++= javaOpts,
   javaOptions in IntegrationTest := javaOpts,
-  parallelExecution in IntegrationTest := false,
   dependencyOverrides += Misc.jacksonBind,
   libraryDependencies ++= withScope(sparkDepScope)(Spark.bundle) :+ (Spark.kafkaSql % Compile),
-  fork in test := true,
-  fork in IntegrationTest := true
-) ++ Defaults.itSettings
+  assemblyShadeRules in assembly := Seq(
+    ShadeRule.rename("com.google.**" -> "shadeio.com.google.@1").inAll,
+    ShadeRule.rename("com.chuusai.**" -> "shadeio.com.chuusai.@1").inAll,
+    ShadeRule.rename("com.codahale.**" -> "shadeio.com.codeahale.@1").inAll
+  )
+)
 
 def assemblySettings: List[Def.SettingsDefinition] = List(
   artifact in (Compile, assembly) := {
@@ -55,6 +56,8 @@ lazy val commonDependencies = (
 
 lazy val common = (project in file("common"))
   .settings(name := "common")
+  .configs(IntegrationTest)
+  .settings(Defaults.itSettings)
   .settings(commonSettings: _*)
   .settings(sparkSettings: _*)
   .settings(libraryDependencies
@@ -64,6 +67,8 @@ lazy val common = (project in file("common"))
 
 lazy val preprocessor = (project in file("preprocessor"))
   .settings(name := "preprocessor")
+  .configs(IntegrationTest)
+  .settings(Defaults.itSettings)
   .settings(commonSettings: _*)
   .settings(sparkSettings: _*)
   .settings(assemblySettings: _*)
@@ -73,9 +78,10 @@ lazy val preprocessor = (project in file("preprocessor"))
 
 lazy val assembler = (project in file("assembler"))
   .settings(name := "assembler")
+  .configs(IntegrationTest)
+  .settings(Defaults.itSettings)
   .settings(commonSettings: _*)
   .settings(sparkSettings: _*)
-  .configs(IntegrationTest extend Test)
   .settings(assemblySettings: _*)
   .settings(libraryDependencies
     ++= commonDependencies

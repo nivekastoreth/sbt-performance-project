@@ -1,7 +1,7 @@
+import sbt.Def
 object Settings {
   import sbt._
   import sbt.Keys._
-  import com.lucidchart.sbt.scalafmt.ScalafmtCorePlugin.autoImport._
 
   private val env = Option(System.getenv("CI_ENV"))
   private val isCiEnv = env.fold(false)(_ == "ci")
@@ -14,15 +14,11 @@ object Settings {
     javaOptions in Test ++= Seq("-Xmx2G", "-Dfile.encoding=UTF8")
   )
 
-  val scalafmtSettings = Seq(
-    scalafmtVersion := "1.5.1",
-    scalafmtOnCompile in Compile := true
-  )
-  
   val defaultSettings = Seq(
     organization := "com.example",
-    scalaVersion := "2.11.12",
+    scalaVersion := "2.11.12"
   )
 
-  val commonSettings = defaultSettings ++ testSettings ++ scalafmtSettings
+  val commonSettings: Seq[Def.Setting[_]] =
+    defaultSettings ++ testSettings
 }
