@@ -7,6 +7,9 @@ Example project exhibiting assembly shade issues introduced with sbt-assembly
 ##### To Reproduce:
 ```bash
 $ git clone git@github.com:nivekastoreth/sbt-performance-project.git
+$ cd sbt-performance-project
+
+# repeat if necessary
 $ sbt clean assembly
 ```
 
